@@ -1,22 +1,26 @@
 #! /bin/bash
 
 DEBIAN_FRONTEND=noninteractive
-
-# Add dependent repositories
-wget url-of-pika-sources.deb -O pika-sources.deb
-apt install pika-sources.deb --yes --option Acquire::Retries=5 --option Acquire::http::Timeout=100 --option Dpkg::Options::="--force-confnew"
-# Clone Upstream
-mkdir -p ./debian ./src-pkg-name
+sed -i '/deb-src/s/^# //' /etc/apt/sources.list && apt update
 
 # Get build deps
 ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
-apt-get build-dep ./ -y
 
-# Build package
-dpkg-buildpackage --no-sign
+
+apt-get source $1
+apt-get install -y pbuilder debootstrap devscripts debhelper sbuild debhelper ubuntu-dev-tools piuparts
+
+apt install -y debian-archive-keyring
+cp -rvf ./pbuilderrc /etc/pbuilderrc
+mkdir -p /var/cache/pbuilder/hook.d/
+cp -rvf ./hooks/* /var/cache/pbuilder/hook.d/
+rm -rf /var/cache/apt/
+mkdir -p /pbuilder-results
+DIST=lunar ARCH=i386 pbuilder create --distribution lunar --architecture i386
+'starting build'
+DIST=lunar ARCH=i386 pbuilder build ./*.dsc --distribution lunar --architecture i386
 
 # Move the debs to output
-cd ../
 mkdir -p ./output
-mv ./*.deb ./output/
+mv /var/cache/pbuilder/result/*.deb ./output/ || sudo mv ../*.deb ./output/
