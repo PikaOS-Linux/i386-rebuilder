@@ -1,1 +1,2 @@
 HOOKDIR="/var/cache/pbuilder/hook.d/"
+export DEBIAN_FRONTEND="noninteractive"
