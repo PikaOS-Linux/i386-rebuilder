@@ -17,9 +17,9 @@ mkdir -p /var/cache/pbuilder/hook.d/
 cp -rvf ./hooks/* /var/cache/pbuilder/hook.d/
 rm -rf /var/cache/apt/
 mkdir -p /pbuilder-results
-DIST=lunar ARCH=i386 pbuilder create --distribution lunar --architecture i386
+DIST=lunar ARCH=i386 pbuilder create --distribution lunar --architecture i386 --debootstrapopts --exclude=aptitude
 echo 'starting build'
-DIST=lunar ARCH=i386 pbuilder build ./*.dsc --distribution lunar --architecture i386
+DIST=lunar ARCH=i386 pbuilder build ./*.dsc --distribution lunar --architecture i386 --debootstrapopts --exclude=aptitude
 
 # Move the debs to output
 mkdir -p ./output
