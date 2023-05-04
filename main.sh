@@ -18,7 +18,7 @@ cp -rvf ./hooks/* /var/cache/pbuilder/hook.d/
 rm -rf /var/cache/apt/
 mkdir -p /pbuilder-results
 DIST=lunar ARCH=i386 pbuilder create --distribution lunar --architecture i386
-'starting build'
+echo 'starting build'
 DIST=lunar ARCH=i386 pbuilder build ./*.dsc --distribution lunar --architecture i386
 
 # Move the debs to output
