@@ -1,4 +1,4 @@
-name: Libeatmydata
+name: Release output branch debs
 
 on:
   workflow_dispatch
