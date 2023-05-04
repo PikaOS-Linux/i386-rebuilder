@@ -2,3 +2,4 @@ HOOKDIR="/var/cache/pbuilder/hook.d/"
 APTCACHEHARDLINK=no
 export DEBIAN_FRONTEND="noninteractive"
 OTHERMIRROR="deb [trusted=yes] https://ppa.pika-os.com/ lunar main"
+USENETWORK=yes
