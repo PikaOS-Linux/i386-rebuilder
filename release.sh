@@ -1,5 +1,6 @@
 # Sign the packages
 ####dpkg-sig --sign builder ./output/*.deb
+mkdir -p ./output
 
 # Pull down existing ppa repo db files etc
 rsync -azP --exclude '*.deb' ferreo@direct.pika-os.com:/srv/www/pikappa/ ./output/repo
