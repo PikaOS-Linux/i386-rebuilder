@@ -1,26 +1,21 @@
 #! /bin/bash
-
 DEBIAN_FRONTEND=noninteractive
-sed -i '/deb-src/s/^# //' /etc/apt/sources.list && apt update
+apt update
+
+# Clone Upstream
+apt-get source $1 -y
 
 # Get build deps
-ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
-DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+apt-get build-dep $1 -y
 
-
-apt-get source $1
-apt-get install -y pbuilder debootstrap devscripts debhelper sbuild debhelper ubuntu-dev-tools piuparts
-
-apt install -y debian-archive-keyring
-cp -rvf ./pbuilderrc /etc/pbuilderrc
-mkdir -p /var/cache/pbuilder/hook.d/
-cp -rvf ./hooks/* /var/cache/pbuilder/hook.d/
-rm -rf /var/cache/apt/
-mkdir -p /pbuilder-results
-DIST=lunar ARCH=i386 pbuilder create --distribution lunar --architecture i386 --debootstrapopts --include=ca-certificates
-echo 'starting build'
-DIST=lunar ARCH=i386 pbuilder build ./*.dsc --distribution lunar --architecture i386 --debootstrapopts --include=ca-certificates
+# Build package
+for i in ./*.dsc
+do
+    cd $(echo $i| sed 's/.dsc//g')
+    dpkg-buildpackage --no-sign
+done
 
 # Move the debs to output
+cd ../
 mkdir -p ./output
-mv /var/cache/pbuilder/result/*.deb ./output/ || sudo mv ../*.deb ./output/
+mv ./*.deb ./output/
