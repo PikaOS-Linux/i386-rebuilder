@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 DEBIAN_FRONTEND=noninteractive
 apt update
 
@@ -12,7 +13,7 @@ apt-get build-dep $1 -y
 for i in ./*.dsc
 do
     dpkg-source -x $i
-    cd $(echo $i | sed 's/.dsc//g')
+    cd $(dpkg-source -x $i | grep "dpkg-source: info: extracting $1 in" | cut -d":" -f3 | sed -s "s/extracting $1 in/ /g")
     dpkg-buildpackage --no-sign
 done
 
