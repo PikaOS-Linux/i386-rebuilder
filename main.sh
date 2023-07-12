@@ -11,6 +11,7 @@ apt-get build-dep $1 -y
 # Build package
 for i in ./*.dsc
 do
+    dpkg-source -x $i
     cd $(echo $i | sed 's/.dsc//g')
     dpkg-buildpackage --no-sign
 done
