@@ -1,5 +1,12 @@
 #! /bin/bash
 DEBIAN_FRONTEND=noninteractive
+touch /etc/apt/sources.list.d/ubuntu.list
+echo "deb-src http://archive.ubuntu.com/ubuntu/ mantic main restricted universe multiverse" > /etc/apt/sources.list.d/ubuntu.list
+echo "deb-src http://archive.ubuntu.com/ubuntu/ mantic-updates main restricted universe multiverse" >> /etc/apt/sources.list.d/ubuntu.list
+echo "deb-src http://archive.ubuntu.com/ubuntu/ mantic-security main restricted universe multiverse" >> /etc/apt/sources.list.d/ubuntu.list
+echo "deb-src http://archive.ubuntu.com/ubuntu/ mantic-backports main restricted universe multiverse" >> /etc/apt/sources.list.d/ubuntu.list
+echo "deb-src http://archive.ubuntu.com/ubuntu/ mantic-proposed main restricted universe multiverse" >> /etc/apt/sources.list.d/ubuntu.list
+
 apt update
 
 # Clone Upstream
